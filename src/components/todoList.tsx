@@ -1,24 +1,13 @@
-import { Itodo } from "../types/data";
+import { useTodoContext } from "../context/todoContext";
 import TodoItem from "./todoItem";
 
-interface ITodoList {
-  items: Itodo[];
-  removeTodo: (id: number) => void;
-  toggleTodo: (id: number) => void;
-}
-
-const TodoList: React.FC<ITodoList> = (props) => {
-  const { items, toggleTodo, removeTodo } = props;
+const TodoList = () => {
+  const { todos } = useTodoContext();
 
   return (
     <div>
-      {items.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          toggleTodo={toggleTodo}
-          removeTodo={removeTodo}
-          {...todo}
-        />
+      {todos.map((todo) => (
+        <TodoItem key={todo.id} {...todo} />
       ))}
     </div>
   );

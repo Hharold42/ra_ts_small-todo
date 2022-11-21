@@ -1,12 +1,11 @@
+import { useTodoContext } from "../context/todoContext";
 import { Itodo } from "../types/data";
 
-interface ITodoItem extends Itodo {
-  removeTodo: (id: number) => void;
-  toggleTodo: (id: number) => void;
-}
+interface ITodoItem extends Itodo {}
 
 const TodoItem: React.FC<ITodoItem> = (props) => {
-  const { id, title, complete, removeTodo, toggleTodo } = props;
+  const { id, title, complete } = props;
+  const { toggleTodo, removeTodo } = useTodoContext();
 
   return (
     <div>
