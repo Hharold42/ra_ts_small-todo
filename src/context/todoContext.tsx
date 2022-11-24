@@ -4,9 +4,10 @@ import { Itodo } from "../types/data";
 interface ITodoContext {
   todos: Itodo[];
   value: string;
+  selectTodo: (id: number) => void;
   addTodo: () => void;
   toggleTodo: (id: number) => void;
-  removeTodo: (id: number) => void;
+  removeTodo: () => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
@@ -14,6 +15,7 @@ interface ITodoContext {
 const TodoContext = createContext<ITodoContext>({
   todos: [],
   value: "",
+  selectTodo: () => {},
   addTodo: () => {},
   toggleTodo: () => {},
   removeTodo: () => {},
@@ -27,6 +29,10 @@ const TodoState = ({ children }: { children: React.ReactNode }) => {
   const [todos, setTodos] = useState<Itodo[]>([]);
   const [value, setValue] = useState("");
 
+  const selectTodo = (id: number): void => {
+	setTodos(todos.map(todo => todo.id === id ? {...todo, selected: !todo.selected} : todo))
+  }
+
   const addTodo = () => {
     value &&
       setTodos([
@@ -35,13 +41,14 @@ const TodoState = ({ children }: { children: React.ReactNode }) => {
           id: Date.now(),
           title: value,
           complete: false,
+		  selected: false
         },
       ]);
     setValue("");
   };
 
-  const removeTodo = (id: number): void => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const removeTodo = (): void => {
+    setTodos(todos.filter((todo) => todo.selected !== true));
   };
 
   const toggleTodo = (id: number): void => {
@@ -70,6 +77,7 @@ const TodoState = ({ children }: { children: React.ReactNode }) => {
       value={{
         todos,
         value,
+		selectTodo,
         addTodo,
         removeTodo,
         toggleTodo,

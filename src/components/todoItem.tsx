@@ -4,23 +4,20 @@ import { Itodo } from "../types/data";
 interface ITodoItem extends Itodo {}
 
 const TodoItem: React.FC<ITodoItem> = (props) => {
-  const { id, title, complete } = props;
-  const { toggleTodo, removeTodo } = useTodoContext();
+  const { id, title, complete, selected } = props;
+  const { toggleTodo, selectTodo } = useTodoContext();
 
   return (
-    <div>
+    <div className={`todo__item ${selected && "--selected"}`} onClick={() => selectTodo(id)}>
       <input
         type="checkbox"
         checked={complete}
         onChange={() => toggleTodo(id)}
+        className="todo__item__check"
       />
-      <span className="inline-block ml-2">{title}</span>
-      <button
-        onClick={() => removeTodo(id)}
-        className="bg-transparent text-red-500 ml-2"
-      >
-        X
-      </button>
+      <span className="todo__item__title">
+        {title}
+      </span>
     </div>
   );
 };
