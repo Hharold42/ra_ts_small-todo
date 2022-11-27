@@ -3,7 +3,9 @@ import { Itodo } from "../types/data";
 
 interface ITodoContext {
   todos: Itodo[];
+  mode: string;
   value: string;
+  changeMode: (mode: string) => void;
   selectTodo: (id: number) => void;
   addTodo: () => void;
   toggleTodo: (id: number) => void;
@@ -12,9 +14,12 @@ interface ITodoContext {
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
+// createing context
 const TodoContext = createContext<ITodoContext>({
   todos: [],
+  mode: "",
   value: "",
+  changeMode: () => {},
   selectTodo: () => {},
   addTodo: () => {},
   toggleTodo: () => {},
@@ -23,15 +28,28 @@ const TodoContext = createContext<ITodoContext>({
   handleKeyDown: () => {},
 });
 
+// exporting context
 export const useTodoContext = () => useContext(TodoContext);
 
+//! needs refactoring
 const TodoState = ({ children }: { children: React.ReactNode }) => {
-  const [todos, setTodos] = useState<Itodo[]>([]);
-  const [value, setValue] = useState("");
+  const [todos, setTodos] = useState<Itodo[]>([]); // All todos array
+  const [value, setValue] = useState(""); // Input string
+  const [mode, setMode] = useState("d"); // filter. 'a' - all todo's, 'd' - done todo's, 'u' - undone todo's
 
+  // change filter
+  const changeMode = (mode: string): void => {
+    setMode(mode);
+  };
+
+  // function to highlight todo
   const selectTodo = (id: number): void => {
-	setTodos(todos.map(todo => todo.id === id ? {...todo, selected: !todo.selected} : todo))
-  }
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, selected: !todo.selected } : todo
+      )
+    );
+  };
 
   const addTodo = () => {
     value &&
@@ -41,7 +59,7 @@ const TodoState = ({ children }: { children: React.ReactNode }) => {
           id: Date.now(),
           title: value,
           complete: false,
-		  selected: false
+          selected: false,
         },
       ]);
     setValue("");
@@ -51,6 +69,7 @@ const TodoState = ({ children }: { children: React.ReactNode }) => {
     setTodos(todos.filter((todo) => todo.selected !== true));
   };
 
+  // check and uncheck task
   const toggleTodo = (id: number): void => {
     setTodos(
       todos.map((todo) => {
@@ -77,7 +96,9 @@ const TodoState = ({ children }: { children: React.ReactNode }) => {
       value={{
         todos,
         value,
-		selectTodo,
+        mode,
+        changeMode,
+        selectTodo,
         addTodo,
         removeTodo,
         toggleTodo,

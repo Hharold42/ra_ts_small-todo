@@ -4,14 +4,12 @@ import "./todo.scss";
 import TodoFoot from "./todoFoot";
 
 const Todo = () => {
-  console.log("wtf todo");
-
   return (
     <div className="todo">
-      <span className="todo__title">todos</span>
-        <InputTodo />
-        <TodoList />
-		<TodoFoot />
+      <span className="todo__title mb-4">to-do list</span>
+      <InputTodo />
+      <TodoList />
+      <TodoFoot />
     </div>
   );
 };

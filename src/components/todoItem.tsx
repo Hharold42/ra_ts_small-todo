@@ -7,6 +7,7 @@ const TodoItem: React.FC<ITodoItem> = (props) => {
   const { id, title, complete, selected } = props;
   const { toggleTodo, selectTodo } = useTodoContext();
 
+  //!! fix overfill
   return (
     <div className={`todo__item ${selected && "--selected"}`} onClick={() => selectTodo(id)}>
       <input
