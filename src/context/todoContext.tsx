@@ -35,7 +35,7 @@ export const useTodoContext = () => useContext(TodoContext);
 const TodoState = ({ children }: { children: React.ReactNode }) => {
   const [todos, setTodos] = useState<Itodo[]>([]); // All todos array
   const [value, setValue] = useState(""); // Input string
-  const [mode, setMode] = useState("d"); // filter. 'a' - all todo's, 'd' - done todo's, 'u' - undone todo's
+  const [mode, setMode] = useState("a"); // filter. 'a' - all todo's, 'd' - done todo's, 'u' - undone todo's
 
   // change filter
   const changeMode = (mode: string): void => {
